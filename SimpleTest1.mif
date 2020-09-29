@@ -1,0 +1,33 @@
+DEPTH = 16384;
+WIDTH = 32;
+ADDRESS_RADIX = HEX;
+DATA_RADIX = HEX;
+CONTENT
+BEGIN
+    [0000..00ff] : dead;
+    0040 : 00800d00; --> 0100 : add	fp, Zero, Zero
+    0041 : 80000107; --> 0104 : addi	Zero, s0, 0x1
+    0042 : 80000108; --> 0108 : addi	Zero, s1, 0x1
+    0043 : 00800900; --> 010c : add 	s2, Zero, Zero
+    0044 : 80000006; --> 0110 : addi	Zero, t1, 0x0
+    0045 : 8000000e; --> 0114 : addi	Zero, sp, 0x0
+    0046 : 80000301; --> 0118 : addi	Zero, a0, 0x3
+    0047 : 80000202; --> 011c : addi 	Zero, a1, 0x2
+    0048 : 00200378; --> 0120 : eq	a2, s0, s1
+    0049 : 80000007; --> 0124 : addi	Zero, s0, 0x0
+    004a : 80000008; --> 0128 : addi	Zero, s1, 0x0
+    004b : 80000009; --> 012c : addi	Zero, s2, 0x0
+    004c : 8000000e; --> 0130 : addi	Zero, sp, 0x0
+    004d : 00800512; --> 0134 : add	t0, a0, a1
+    004e : 8000012d; --> 0138 : addi	a1, fp, 0x1
+    004f : 80000007; --> 013c : addi	Zero, s0, 0x0
+    0050 : 80000008; --> 0140 : addi	Zero, s1, 0x0
+    0051 : 80000009; --> 0144 : addi	Zero, s2, 0x0
+    0052 : 80000006; --> 0148 : addi	Zero, t1, 0x0
+    0053 : 68f00003; --> 014c : sw	a2, HEX(Zero)
+    0054 : 68f02003; --> 0150 : sw 	a2, LEDR(Zero)
+    0055 : 68f0005d; --> 0154 : sw	fp, HEX(t0)
+    0056 : 68f000d2; --> 0158 : sw	a1, HEX(fp)
+    0057 : 20ffff22; --> 015c : beq	a1, a1, Done
+    [0058..3fff] : dead;
+END;

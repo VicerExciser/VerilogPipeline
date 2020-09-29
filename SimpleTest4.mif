@@ -1,0 +1,19 @@
+DEPTH = 16384;
+WIDTH = 32;
+ADDRESS_RADIX = HEX;
+DATA_RADIX = HEX;
+CONTENT
+BEGIN
+    [0000..00ff] : dead;
+    0040 : 80000198; --> 0100 : addi s2, s1, 0x1
+    0041 : 80ffff18; --> 0104 : subi a0, s1, 0x1
+    0042 : 800dab02; --> 0108 : addi Zero, a1, 0xDAB
+    0043 : 800bad03; --> 010c : addi Zero, a2, 0xBAD
+    0044 : 30004756; --> 0110 : jal t1, Dab(t0)
+    0045 : 68f00003; --> 0114 : sw a2, HEX(Zero)
+    0046 : 20fffe00; --> 0118 : br Bad
+    0047 : 68f02008; --> 011c : sw s1, LEDR(Zero)
+    0048 : 68f00002; --> 0120 : sw a1, HEX(Zero)
+    0049 : 20fffd00; --> 0124 : br Dab
+    [004a..3fff] : dead;
+END;

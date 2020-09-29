@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simPackage>
+ <file path="NineSixPll_sim/NineSixPll.vo" type="VERILOG" />
+ <topLevel name="NineSixPll" />
+ <deviceFamily name="cyclonev" />
+</simPackage>

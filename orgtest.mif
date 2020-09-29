@@ -1,0 +1,22 @@
+DEPTH = 16384;
+WIDTH = 32;
+ADDRESS_RADIX = HEX;
+DATA_RADIX = HEX;
+CONTENT
+BEGIN
+    [0000..00ff] : dead;
+    0040 : 80000f06; --> 0100 : ADDI Zero,T1,0x0F
+    0041 : 68f02006; --> 0104 : sw 	t1,LEDR(zero)
+    0042 : 800bad05; --> 0108 : addi	Zero,t0,0xBAD
+    0043 : 68f00005; --> 010c : sw		t0,HEX(Zero)
+    0044 : 80f00001; --> 0110 : ADDI Zero,A0,HandlerAddr
+    0045 : fc0c4400; --> 0114 : WSR IHA,A0
+    0046 : fc0b8400; --> 0118 : RSR SP,IHA
+    0047 : 303c000a; --> 011c : JMP HandlerAddr(Zero)
+    [0048..efff] : dead;
+    3c00 : 80dead05; --> f000 : addi	Zero,t0,0xDEAD
+    3c01 : 68f00005; --> f004 : sw		t0,HEX(Zero)
+    3c02 : 8000ff04; --> f008 : ADDI Zero,RV,0xFF
+    3c03 : 68f02004; --> f00c : SW 	RV,LEDR(Zero)
+    3c04 : 303c040a; --> f010 : JMP Forever(Zero)
+END;

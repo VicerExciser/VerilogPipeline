@@ -1,0 +1,32 @@
+; Addresses for I/O
+.NAME   HEX   = 0xFFFFF000
+.NAME   LEDR  = 0xFFFFF020
+.NAME   KDATA = 0xFFFFF080
+.NAME   KCTRL = 0xFFFFF084
+.NAME   SDATA = 0xFFFFF090
+.NAME   SCTRL = 0xFFFFF094
+.NAME   TCNT  = 0xFFFFF100
+.NAME   TLIM  = 0xFFFFF104
+.NAME   TCTL  = 0xFFFFF108
+
+.ORG 0x10
+
+.ORG 0x100
+ADDI Zero, T0, 1
+WSR IHA, T0
+RSR T1, IHA
+BNE T0, T1, Bad
+BEQ T0, T1, Good
+BR Bad
+
+Good:
+  ADDI Zero, T1, 0x333
+  ADDI Zero, S0, HEX
+  SW T1, 0(S0)
+  BR Good
+
+Bad:
+  ADDI    Zero, T0, 0x999
+  ADDI    Zero, S0, HEX
+  SW      T0, 0(S0)
+  BR Bad

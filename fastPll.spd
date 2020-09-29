@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simPackage>
+ <file path="fastPll_sim/fastPll.vo" type="VERILOG" />
+ <topLevel name="fastPll" />
+ <deviceFamily name="cyclonev" />
+</simPackage>

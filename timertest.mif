@@ -1,0 +1,50 @@
+DEPTH = 16384;
+WIDTH = 32;
+ADDRESS_RADIX = HEX;
+DATA_RADIX = HEX;
+CONTENT
+BEGIN
+    [0000..000f] : dead;
+    0004 : fc090800; --> 0010 : RSR 	A3,IRA
+    0005 : 80000155; --> 0014 : ADDI 	T0,T0,1
+    0006 : fc088c00; --> 0018 : RSR 	A1,IDN
+    0007 : 20005240; --> 001c : BEQ 	A3,Zero,Fail
+    0008 : 2c005102; --> 0020 : BNE 	Zero,A1,Fail
+    0009 : 80001002; --> 0024 : ADDI 	Zero,A1,16
+    000a : 68f108d2; --> 0028 : SW		A1,TCTL(FP)
+    000b : 80014802; --> 002c : ADDI 	Zero,A1,0x148
+    000c : fc0c8800; --> 0030 : WSR 	IRA,A1
+    000d : fc040000; --> 0034 : RETI
+    [000e..00ff] : dead;
+    0040 : 00980000; --> 0100 : XOR		Zero,Zero,Zero
+    0041 : 00980ddd; --> 0104 : XOR 	FP,FP,FP
+    0042 : 00980500; --> 0108 : XOR 	T0,Zero,Zero
+    0043 : 8000010e; --> 010c : ADDI 	Zero,SP,1
+    0044 : 80040009; --> 0110 : ADDI 	Zero,S2,1024
+    0045 : 008007ed; --> 0114 : ADD 	S0,SP,FP
+    0046 : 80000408; --> 0118 : ADDI 	Zero,S1,4
+    0047 : 00c40778; --> 011c : LSHF 	S0,S0,S1
+    0048 : 68f108d7; --> 0120 : SW 		S0,TCTL(FP)
+    0049 : 00c0099e; --> 0124 : RSHF 	S2,S2,SP
+    004a : 68f100d0; --> 0128 : SW 		Zero,TCNT(FP)
+    004b : 8007d001; --> 012c : ADDI	Zero,A0,2000
+    004c : 68f104d1; --> 0130 : SW 		A0,TLIM(FP)
+    004d : 00c0099e; --> 0134 : RSHF 	S2,S2,SP
+    004e : 800010d8; --> 0138 : ADDI	FP,S1,HandlerAddr
+    004f : fc0c6000; --> 013c : WSR 	IHA,S1
+    0050 : fc09c400; --> 0140 : RSR 	S0,IHA
+    0051 : 00c0099e; --> 0144 : RSHF 	S2,S2,SP
+    0052 : 68f000d5; --> 0148 : SW 		T0,HEX(FP)
+    0053 : 80fff156; --> 014c : SUBI 	T0,T1,15
+    0054 : 24fffd6d; --> 0150 : BLT 	T1,FP,Main
+    0055 : 68f000d5; --> 0154 : SW 		T0,HEX(FP)
+    0056 : 00b005dd; --> 0158 : NOT 	T0,FP
+    0057 : 68f020d5; --> 015c : SW 		T0,LEDR(FP)
+    0058 : 300058da; --> 0160 : JMP 	Done(FP)
+    0059 : 0080059d; --> 0164 : ADD 	T0,S2,FP
+    005a : 68f020d5; --> 0168 : SW 		T0,LEDR(FP)
+    005b : 800bad06; --> 016c : ADDI 	Zero,T1,0xBAD
+    005c : 68f000d6; --> 0170 : SW 		T1,HEX(FP)
+    005d : 30005ada; --> 0174 : JMP 	Fail(FP)
+    [005e..3fff] : dead;
+END;

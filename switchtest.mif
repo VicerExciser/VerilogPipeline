@@ -1,0 +1,22 @@
+DEPTH = 16384;
+WIDTH = 32;
+ADDRESS_RADIX = HEX;
+DATA_RADIX = HEX;
+CONTENT
+BEGIN
+    [0000..000f] : dead;
+    0004 : 48f090d2; --> 0010 : LW 		A1,SDATA(FP)
+    0005 : 68f020d2; --> 0014 : SW 		A1,LEDR(FP)
+    0006 : fc040000; --> 0018 : RETI
+    [0007..00ff] : dead;
+    0040 : 00980000; --> 0100 : XOR		Zero,Zero,Zero
+    0041 : 00980ddd; --> 0104 : XOR 	FP,FP,FP
+    0042 : 800001de; --> 0108 : ADDI	FP,SP,1
+    0043 : 800004d8; --> 010c : ADDI 	FP,S1,4
+    0044 : 00c407e8; --> 0110 : LSHF 	S0,SP,S1
+    0045 : 68f094d7; --> 0114 : SW 		S0,SCTRL(FP)
+    0046 : 800010d9; --> 0118 : ADDI	FP,S2,HandlerAddr
+    0047 : fc0c6400; --> 011c : WSR 	IHA,S2
+    0048 : 20ffff00; --> 0120 : BR 	Main
+    [0049..3fff] : dead;
+END;

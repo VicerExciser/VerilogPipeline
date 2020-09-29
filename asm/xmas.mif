@@ -1,0 +1,97 @@
+DEPTH = 16384;
+WIDTH = 32;
+ADDRESS_RADIX = HEX;
+DATA_RADIX = HEX;
+CONTENT
+BEGIN
+    [0000..000f] : dead;
+    0004 : 80fff0bb; --> 0010 : ADDI 	SSP,SSP,-16
+    0005 : 68000cb1; --> 0014 : SW 		A0,12(SSP)
+    0006 : 680008b2; --> 0018 : SW 		A1,8(SSP)
+    0007 : 680004b3; --> 001c : SW 		A2,4(SSP)
+    0008 : 680000b4; --> 0020 : SW 		A3,0(SSP)
+    0009 : fc084c00; --> 0024 : RSR 	A0,IDN
+    000a : 80000102; --> 0028 : ADDI 	Zero,A1,1
+    000b : 20000512; --> 002c : BEQ 	A0,A1,TimeHandler
+    000c : 80000102; --> 0030 : ADDI 	Zero,A1,1
+    000d : 20002612; --> 0034 : BEQ 	A0,A1,KeyHandler
+    000e : 80000102; --> 0038 : ADDI 	Zero,A1,1
+    000f : 20003312; --> 003c : BEQ 	A0,A1,SwHandler
+    0010 : 20003400; --> 0040 : BR 		IntReturn
+    0011 : 80000503; --> 0044 : ADDI 	Zero,A2,5
+    0012 : 80000104; --> 0048 : ADDI 	Zero,A3,1
+    0013 : 00980111; --> 004c : XOR 	A0,A0,A0
+    0014 : 2c000381; --> 0050 : BNE 	S1,A0,State1
+    0015 : 00900194; --> 0054 : AND 	A0,S2,A3
+    0016 : 20000f14; --> 0058 : BEQ 	A0,A3,LedrOff
+    0017 : 20000800; --> 005c : BR 		UpperOn
+    0018 : 80000111; --> 0060 : ADDI 	A0,A0,1
+    0019 : 2c000381; --> 0064 : BNE 	S1,A0,State2
+    001a : 00900194; --> 0068 : AND 	A0,S2,A3
+    001b : 20000a14; --> 006c : BEQ 	A0,A3,LedrOff
+    001c : 20000600; --> 0070 : BR 		LowerOn
+    001d : 00900194; --> 0074 : AND 	A0,S2,A3
+    001e : 20000414; --> 0078 : BEQ 	A0,A3,LowerOn
+    001f : 20000000; --> 007c : BR 		UpperOn
+    0020 : 8003e002; --> 0080 : ADDI 	Zero,A1,UpperLED
+    0021 : 68f02002; --> 0084 : SW 		A1,LEDR(Zero)
+    0022 : 20000500; --> 0088 : BR 		UpdateState
+    0023 : 80001f02; --> 008c : ADDI 	Zero,A1,LowerLED
+    0024 : 68f02002; --> 0090 : SW 		A1,LEDR(Zero)
+    0025 : 20000200; --> 0094 : BR 		UpdateState
+    0026 : 00980222; --> 0098 : XOR 	A1,A1,A1
+    0027 : 68f02002; --> 009c : SW 		A1,LEDR(Zero)
+    0028 : 80000199; --> 00a0 : ADDI 	S2,S2,1
+    0029 : 28000593; --> 00a4 : BLE 	S2,A2,CleanTctl
+    002a : 00980999; --> 00a8 : XOR 	S2,S2,S2
+    002b : 80000188; --> 00ac : ADDI 	S1,S1,1
+    002c : 80000201; --> 00b0 : ADDI 	Zero,A0,2
+    002d : 28000181; --> 00b4 : BLE 	S1,A0,CleanTctl
+    002e : 00980888; --> 00b8 : XOR 	S1,S1,S1
+    002f : 48f10801; --> 00bc : LW 		A0,TCTL(Zero)
+    0030 : 80001202; --> 00c0 : ADDI 	Zero,A1,18
+    0031 : 00900112; --> 00c4 : AND 	A0,A0,A1
+    0032 : 68f10801; --> 00c8 : SW 		A0,TCTL(Zero)
+    0033 : 20001100; --> 00cc : BR 		IntReturn
+    0034 : 48f08001; --> 00d0 : LW 		A0,KDATA(Zero)
+    0035 : 80000102; --> 00d4 : ADDI 	Zero,A1,1
+    0036 : 2c000521; --> 00d8 : BNE 	A1,A0,CheckK1
+    0037 : 80348003; --> 00dc : ADDI 	Zero,A2,194000000
+    0038 : 20000c53; --> 00e0 : BEQ 	T0,A2,IntReturn
+    0039 : 80069055; --> 00e4 : ADDI 	T0,T0,24250000
+    003a : 68f10405; --> 00e8 : SW 		T0,TLIM(Zero)
+    003b : 20000900; --> 00ec : BR 		IntReturn
+    003c : 80000122; --> 00f0 : ADDI 	A1,A1,1
+    003d : 2c000712; --> 00f4 : BNE 	A0,A1,IntReturn
+    003e : 80069003; --> 00f8 : ADDI 	Zero,A2,24250000
+    003f : 20000553; --> 00fc : BEQ 	T0,A2,IntReturn
+    0040 : 80f97055; --> 0100 : SUBI 	T0,T0,24250000
+    0041 : 68f10405; --> 0104 : SW 		T0,TLIM(Zero)
+    0042 : 20000200; --> 0108 : BR 		IntReturn
+    0043 : 48f09001; --> 010c : LW 		A0,SDATA(Zero)
+    0044 : 20000000; --> 0110 : BR 		IntReturn
+    0045 : 480000b4; --> 0114 : LW 		A3,0(SSP)
+    0046 : 480004b3; --> 0118 : LW 		A2,4(SSP)
+    0047 : 480008b2; --> 011c : LW 		A1,8(SSP)
+    0048 : 48000cb1; --> 0120 : LW 		A0,12(SSP)
+    0049 : 800010bb; --> 0124 : ADDI 	SSP,SSP,16
+    004a : fc040000; --> 0128 : RETI
+    004b : 00980000; --> 0100 : XOR		Zero,Zero,Zero
+    004c : 00980ddd; --> 0104 : XOR 	FP,FP,FP
+    004d : 80f0000e; --> 0108 : ADDI	Zero,SP,StkTop
+    004e : 8000000b; --> 010c : ADDI 	Zero,SSP,SysStkTop
+    004f : 80001007; --> 0110 : ADDI	Zero,S0,GenHandler
+    0050 : fc0c5c00; --> 0114 : WSR 	IHA,S0
+    0051 : 80000107; --> 0118 : ADDI 	Zero,S0,1
+    0052 : fc0c1c00; --> 011c : WSR 	PCS,S0
+    0053 : 80001007; --> 0120 : ADDI 	Zero,S0,16
+    0054 : 68f10807; --> 0124 : SW 		S0,TCTL(Zero)
+    0055 : 68f08407; --> 0128 : SW 		S0,KCTRL(Zero)
+    0056 : 68f09407; --> 012c : SW 		S0,SCTRL(Zero)
+    0057 : 00980888; --> 0130 : XOR 	S1,S1,S1
+    0058 : 00980999; --> 0134 : XOR 	S2,S2,S2
+    0059 : 800d2005; --> 0138 : ADDI 	Zero,T0,48500000
+    005a : 68f10405; --> 013c : SW 		T0,TLIM(Zero)
+    005b : 20ffff00; --> 0140 : BR 	Main
+    [005c..3fff] : dead;
+END;

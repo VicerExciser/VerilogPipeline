@@ -1,0 +1,14 @@
+DEPTH = 16384;
+WIDTH = 32;
+ADDRESS_RADIX = HEX;
+DATA_RADIX = HEX;
+CONTENT
+BEGIN
+    [0000..00ff] : dead;
+    0040 : 80000187; --> 0100 : addi s1, s0, 0x1
+    0041 : 80000179; --> 0104 : addi s0, s2, 0x1
+    0042 : 80000191; --> 0108 : addi s2, a0, 0x1
+    0043 : 68f00001; --> 010c : sw a0, HEX(Zero)
+    0044 : 20fffe00; --> 0110 : br Done
+    [0045..3fff] : dead;
+END;
